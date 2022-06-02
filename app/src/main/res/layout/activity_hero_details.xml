@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HeroDetailsActivity"
+    android:orientation="vertical"
+    android:id="@+id/detailsLayout"
+    android:background="#dddddd">
+
+    <ImageView
+        android:id="@+id/heroDetailsImage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        />
+
+    <TextView
+        android:id="@+id/detailsName"
+        tools:text = "name"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/detailsHeight"
+        tools:text = "height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "10dp"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/detailsWeight"
+        tools:text = "weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "10dp"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/detailsPlaceOfBirth"
+        tools:text = "birth"
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "10dp"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/detailsFirstAppearance"
+        tools:text = "first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "10dp"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:id="@+id/detailsPublisher"
+        tools:text = "publisher"
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop = "10dp"
+        android:layout_gravity="center"
+        />
+
+
+</LinearLayout>

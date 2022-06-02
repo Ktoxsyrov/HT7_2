@@ -1,5 +1,6 @@
 package com.example.ht5_2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -24,8 +25,7 @@ class MainActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -33,11 +33,17 @@ class MainActivity : AppCompatActivity(){
         binding.heroesRecyclerView.addOnItemCLickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 val clickedHero = adapter.heroes[position]
-                Toast.makeText(this@MainActivity, clickedHero.name, Toast.LENGTH_SHORT).show()
-                //  val intent = Intent(this@MainActivity, SecondActivity::class.java)
-//                intent.putExtra("img", img)
-
-                // startActivity(intent)
+        //        Toast.makeText(this@MainActivity, clickedHero.name, Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, HeroDetailsActivity::class.java)
+                intent.putExtra("img", clickedHero.images.sm)
+                intent.putExtra("name", clickedHero.name)
+                intent.putExtra("placeOfBirth", clickedHero.biography.placeOfBirth)
+                intent.putExtra("firstAppearance", clickedHero.biography.firstAppearance)
+                intent.putExtra("publisher", clickedHero.biography.publisher)
+                intent.putExtra("height", clickedHero.appearance.height[1])
+                intent.putExtra("weight", clickedHero.appearance.weight[1])
+                intent.putExtra("alignment", clickedHero.biography.alignment)
+                startActivity(intent)
             }
 
 
