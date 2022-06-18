@@ -1,5 +1,6 @@
 package com.example.ht5_2
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ht5_2.adapter.SuperHeroesAdapter
 import com.example.ht5_2.databinding.ActivityMainBinding
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +36,6 @@ class MainActivity : AppCompatActivity(){
         binding.heroesRecyclerView.addOnItemCLickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 val clickedHero = adapter.heroes[position]
-        //        Toast.makeText(this@MainActivity, clickedHero.name, Toast.LENGTH_SHORT).show()
                 val intent = Intent(this@MainActivity, HeroDetailsActivity::class.java)
                 intent.putExtra("img", clickedHero.images.sm)
                 intent.putExtra("name", clickedHero.name)
@@ -45,29 +47,40 @@ class MainActivity : AppCompatActivity(){
                 intent.putExtra("alignment", clickedHero.biography.alignment)
                 startActivity(intent)
             }
-
-
         })
-
-        val apiInterface = RetroInstance.getRetroInstance().getHeroesFromApi()
 
         binding.heroesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.heroesRecyclerView.adapter = adapter
 
-        apiInterface.enqueue(object : Callback<List<SuperHero>> {
-            override fun onResponse(
-                call: Call<List<SuperHero>>,
-                response: Response<List<SuperHero>>
-            ) {
-                if(response.body() != null)
-                    adapter.setHeroesList(response.body()!!)
-            }
+        val sharedPreferences = getSharedPreferences("HEROES_PREFS", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = sharedPreferences.getString("heroes", null)
+        if(json != null) {
+            val type = object : TypeToken<List<SuperHero>>() {}.type
+            adapter.setHeroesList(gson.fromJson<List<SuperHero>>(json, type))
+        }else {
+            val apiInterface = RetroInstance.getRetroInstance().getHeroesFromApi()
 
-            override fun onFailure(call: Call<List<SuperHero>>, t: Throwable) {
+            apiInterface.enqueue(object : Callback<List<SuperHero>> {
+                override fun onResponse(
+                    call: Call<List<SuperHero>>,
+                    response: Response<List<SuperHero>>
+                ) {
+                    if (response.body() != null) {
+                        adapter.setHeroesList(response.body()!!)
+                        val json = gson.toJson(response.body()!!)
+                        editor.putString("heroes", json)
+                        editor.apply()
+                    }
+                }
 
-            }
+                override fun onFailure(call: Call<List<SuperHero>>, t: Throwable) {
 
-        } )
+                }
+
+            })
+        }
 
     }
     private fun RecyclerView.addOnItemCLickListener(onClickListener: OnItemClickListener){
